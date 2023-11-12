@@ -1,4 +1,8 @@
 import { Formik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
+
 import * as Yup from 'yup';
 import "yup-phone"; 
 import { ErrMessage, StyledForm, StyledField, Label, BtnAdd } from './ContactForm.styled';
@@ -9,38 +13,55 @@ const quizSchema = Yup.object().shape({
   
 });
 
- const ContactForm = ({ onAdd }) => {
-  return (
-    <Formik
-      initialValues={{
-        name: '',
-        number: '',
-      }}
-      validationSchema={quizSchema}
-      onSubmit={(values, actions) => {
-        onAdd(values);
-        actions.resetForm();
-      }}
-    >
-          <StyledForm>
-              
+const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  
+  function addNewContact({ name, number }) {
+    const newContact = contacts.some(({ name }) => name.toUpperCase() === contacts.name.toUpperCase())
+    if (newContact) {
+      return alert(
+        `WARNING! ${name} is already in contacts`)
+       
+    }
+    dispatch(addContact(name, number));
+  }
+
+   function handleFormSubmit(values, { setSubmitting, resetForm }) {
+    setSubmitting(true);
+    addNewContact(values);
+    resetForm();
+    setSubmitting(false);
+  }
+
+    return (
+      <Formik
+        initialValues={{
+          name: '',
+          number: '',
+        }}
+        onSubmit={handleFormSubmit}
+        validationSchema={quizSchema}
+        >
+        <StyledForm>
         
-              <Label>
-                Name
-          <StyledField type="text" name="name" placeholder=" " />
-          <ErrMessage name="name" component="div" />
-              </Label>
+          <Label>
+            Name
+            <StyledField type="text" name="name" placeholder=" " />
+            <ErrMessage name="name" component="div" />
+          </Label>
 
-             <Label>
-              Number (000-00-00)
-          <StyledField type="text" name="number" />
-          <ErrMessage name="number" component="div" />
-            </Label>
+          <Label>
+            Number (000-00-00)
+            <StyledField type="text" name="number" />
+            <ErrMessage name="number" component="div" />
+          </Label>
 
-            <BtnAdd type="submit">Add contact</BtnAdd>
-      </StyledForm>
-    </Formik>
-  );
-};
+          <BtnAdd type="submit">Add contact</BtnAdd>
+        </StyledForm>
+      </Formik>
+    );
+  };
+
 
 export default ContactForm;
