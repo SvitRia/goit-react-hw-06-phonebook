@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/contactSlice';
 
 import * as Yup from 'yup';
 import "yup-phone"; 
@@ -18,11 +18,12 @@ const ContactForm = () => {
   const contacts = useSelector(getContacts);
   
   function addNewContact({ name, number }) {
-    const newContact = contacts.some(({ name }) => name.toUpperCase() === contacts.name.toUpperCase())
-    if (newContact) {
+   
+    const hasContact = contacts.some(contact => contact.name.toLowerCase().includes(name.toLowerCase()))
+    
+    if (hasContact) {
       return alert(
-        `WARNING! ${name} is already in contacts`)
-       
+        `WARNING! ${name} is already in contacts`) 
     }
     dispatch(addContact(name, number));
   }
