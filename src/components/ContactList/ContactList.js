@@ -22,20 +22,3 @@ export const ContactList = (() => {
         )
 })
 
-// export class ContactList extends Component  {
-//     render() {
-//          const { contacts, onDelete } = this.props;
-//         return (
-//             <div>
-//                 <List>
-//                     {contacts.map((contact) => (<li key={contact.id}> <ContactItem
-//                         contactItem={contact}
-//                         onDeleteContact={onDelete}/>
-//                     </li>) 
-//                 )}
-//                 </List>
-//             </div>
-//         )
-//     }
-
-// }
