@@ -4,11 +4,14 @@ import { List } from './ContactList.styled';
 import { getContacts, getFilters } from 'redux/selectors';
 
 export const ContactList = (() => {
-     const contacts = useSelector(getContacts);
-    const FilterName = useSelector(getFilters).name;
+    const contacts = useSelector(getContacts);
+    console.log(contacts)
+    const filterName = useSelector(getFilters).name;
+    console.log(filterName)
     const filteredContacts = [...contacts].filter(({ name }) =>
-    name.toUpperCase().includes(FilterName.toUpperCase())
+        name.toUpperCase().includes(filterName.toUpperCase())
   );
+   console.log(filteredContacts)
 
     return (
             <div>
